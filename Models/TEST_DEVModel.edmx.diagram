@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1e35d66a2ad241428b4725a610deca38" Name="Diagram1">
+        <EntityTypeShape EntityType="TEST_DEVModel.LIST" Width="1.5" PointX="3.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TEST_DEVModel.PRODUCT" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TEST_DEVModel.PRODUCT_TAX" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TEST_DEVModel.PRODUCTO_PRICE" Width="1.5" PointX="6" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TEST_DEVModel.TAX" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TEST_DEVModel.vProductoDetalleImpuestos" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <AssociationConnector Association="TEST_DEVModel.FK_PRODUCTO_PRICE_LIST" ManuallyRouted="false" />
+        <AssociationConnector Association="TEST_DEVModel.FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT" ManuallyRouted="false" />
+        <AssociationConnector Association="TEST_DEVModel.FK_PRODUCT_TAX_PRODUCT" ManuallyRouted="false" />
+        <AssociationConnector Association="TEST_DEVModel.FK_PRODUCT_TAX_PRODUCT_TAX" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

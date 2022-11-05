@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TEST_DEVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LIST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="STATE" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCT_TAX">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="bigint" Nullable="false" />
+          <Property Name="TAX_ID" Type="bigint" Nullable="false" />
+          <Property Name="TYPE" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="VALUE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="STATE" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCTO_PRICE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="bigint" Nullable="false" />
+          <Property Name="LIST_ID" Type="bigint" Nullable="false" />
+          <Property Name="DATE_INIT" Type="date" Nullable="false" />
+          <Property Name="DATE_END" Type="date" Nullable="false" />
+          <Property Name="VALUE" Type="money" Nullable="false" />
+          <Property Name="STATE" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TAX">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="STATE" Type="bit" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TEST_DEV.dbo.vProductoDetalleImpuestos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vProductoDetalleImpuestos">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+            <PropertyRef Name="PRODUCT_NAME" />
+            <PropertyRef Name="PRICE_LIST_NAME" />
+            <PropertyRef Name="PRODUCT_PRICE" />
+            <PropertyRef Name="PRODUCT_TAX" />
+            <PropertyRef Name="MONEY" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="bigint" Nullable="false" />
+          <Property Name="PRODUCT_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PRICE_LIST_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PRODUCT_PRICE" Type="money" Nullable="false" />
+          <Property Name="PRODUCT_TAX" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PERCENTAGE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MONEY" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TOTAL" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <Association Name="FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="PRODUCTO_PRICE" Type="Self.PRODUCTO_PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_PRICE">
+              <PropertyRef Name="PRODUCT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_TAX_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="PRODUCT_TAX" Type="Self.PRODUCT_TAX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCT_TAX">
+              <PropertyRef Name="PRODUCT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_TAX_PRODUCT_TAX">
+          <End Role="TAX" Type="Self.TAX" Multiplicity="1" />
+          <End Role="PRODUCT_TAX" Type="Self.PRODUCT_TAX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAX">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCT_TAX">
+              <PropertyRef Name="TAX_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_PRICE_LIST">
+          <End Role="LIST" Type="Self.LIST" Multiplicity="1" />
+          <End Role="PRODUCTO_PRICE" Type="Self.PRODUCTO_PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIST">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_PRICE">
+              <PropertyRef Name="LIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TEST_DEVModelStoreContainer">
+          <EntitySet Name="LIST" EntityType="Self.LIST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_TAX" EntityType="Self.PRODUCT_TAX" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTO_PRICE" EntityType="Self.PRODUCTO_PRICE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TAX" EntityType="Self.TAX" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vProductoDetalleImpuestos" EntityType="Self.vProductoDetalleImpuestos" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vProductoDetalleImpuestos].[PRODUCT_ID] AS [PRODUCT_ID], 
+    [vProductoDetalleImpuestos].[PRODUCT_NAME] AS [PRODUCT_NAME], 
+    [vProductoDetalleImpuestos].[PRICE_LIST_NAME] AS [PRICE_LIST_NAME], 
+    [vProductoDetalleImpuestos].[PRODUCT_PRICE] AS [PRODUCT_PRICE], 
+    [vProductoDetalleImpuestos].[PRODUCT_TAX] AS [PRODUCT_TAX], 
+    [vProductoDetalleImpuestos].[PERCENTAGE] AS [PERCENTAGE], 
+    [vProductoDetalleImpuestos].[MONEY] AS [MONEY], 
+    [vProductoDetalleImpuestos].[TOTAL] AS [TOTAL]
+    FROM [dbo].[vProductoDetalleImpuestos] AS [vProductoDetalleImpuestos]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT" Association="Self.FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="PRODUCTO_PRICE" EntitySet="PRODUCTO_PRICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_TAX_PRODUCT" Association="Self.FK_PRODUCT_TAX_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="PRODUCT_TAX" EntitySet="PRODUCT_TAX" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_TAX_PRODUCT_TAX" Association="Self.FK_PRODUCT_TAX_PRODUCT_TAX">
+            <End Role="TAX" EntitySet="TAX" />
+            <End Role="PRODUCT_TAX" EntitySet="PRODUCT_TAX" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_PRICE_LIST" Association="Self.FK_PRODUCTO_PRICE_LIST">
+            <End Role="LIST" EntitySet="LIST" />
+            <End Role="PRODUCTO_PRICE" EntitySet="PRODUCTO_PRICE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TEST_DEVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LIST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PRODUCTO_PRICE" Relationship="Self.FK_PRODUCTO_PRICE_LIST" FromRole="LIST" ToRole="PRODUCTO_PRICE" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STATE" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PRODUCTO_PRICE" Relationship="Self.FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT" FromRole="PRODUCT" ToRole="PRODUCTO_PRICE" />
+          <NavigationProperty Name="PRODUCT_TAX" Relationship="Self.FK_PRODUCT_TAX_PRODUCT" FromRole="PRODUCT" ToRole="PRODUCT_TAX" />
+        </EntityType>
+        <EntityType Name="PRODUCT_TAX">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int64" Nullable="false" />
+          <Property Name="TAX_ID" Type="Int64" Nullable="false" />
+          <Property Name="TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VALUE" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="STATE" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PRODUCT" Relationship="Self.FK_PRODUCT_TAX_PRODUCT" FromRole="PRODUCT_TAX" ToRole="PRODUCT" />
+          <NavigationProperty Name="TAX" Relationship="Self.FK_PRODUCT_TAX_PRODUCT_TAX" FromRole="PRODUCT_TAX" ToRole="TAX" />
+        </EntityType>
+        <EntityType Name="PRODUCTO_PRICE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int64" Nullable="false" />
+          <Property Name="LIST_ID" Type="Int64" Nullable="false" />
+          <Property Name="DATE_INIT" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATE_END" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="VALUE" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="STATE" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LIST" Relationship="Self.FK_PRODUCTO_PRICE_LIST" FromRole="PRODUCTO_PRICE" ToRole="LIST" />
+          <NavigationProperty Name="PRODUCT" Relationship="Self.FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT" FromRole="PRODUCTO_PRICE" ToRole="PRODUCT" />
+        </EntityType>
+        <EntityType Name="TAX">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STATE" Type="Boolean" />
+          <NavigationProperty Name="PRODUCT_TAX" Relationship="Self.FK_PRODUCT_TAX_PRODUCT_TAX" FromRole="TAX" ToRole="PRODUCT_TAX" />
+        </EntityType>
+        <EntityType Name="vProductoDetalleImpuestos">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+            <PropertyRef Name="PRODUCT_NAME" />
+            <PropertyRef Name="PRICE_LIST_NAME" />
+            <PropertyRef Name="PRODUCT_PRICE" />
+            <PropertyRef Name="PRODUCT_TAX" />
+            <PropertyRef Name="MONEY" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="Int64" Nullable="false" />
+          <Property Name="PRODUCT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PRICE_LIST_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PRODUCT_PRICE" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PRODUCT_TAX" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PERCENTAGE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MONEY" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TOTAL" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <Association Name="FK_PRODUCTO_PRICE_LIST">
+          <End Role="LIST" Type="Self.LIST" Multiplicity="1" />
+          <End Role="PRODUCTO_PRICE" Type="Self.PRODUCTO_PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIST">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_PRICE">
+              <PropertyRef Name="LIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="PRODUCTO_PRICE" Type="Self.PRODUCTO_PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_PRICE">
+              <PropertyRef Name="PRODUCT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_TAX_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="PRODUCT_TAX" Type="Self.PRODUCT_TAX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCT_TAX">
+              <PropertyRef Name="PRODUCT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_TAX_PRODUCT_TAX">
+          <End Role="TAX" Type="Self.TAX" Multiplicity="1" />
+          <End Role="PRODUCT_TAX" Type="Self.PRODUCT_TAX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAX">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCT_TAX">
+              <PropertyRef Name="TAX_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TEST_DEVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LIST" EntityType="Self.LIST" />
+          <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" />
+          <EntitySet Name="PRODUCT_TAX" EntityType="Self.PRODUCT_TAX" />
+          <EntitySet Name="PRODUCTO_PRICE" EntityType="Self.PRODUCTO_PRICE" />
+          <EntitySet Name="TAX" EntityType="Self.TAX" />
+          <EntitySet Name="vProductoDetalleImpuestos" EntityType="Self.vProductoDetalleImpuestos" />
+          <AssociationSet Name="FK_PRODUCTO_PRICE_LIST" Association="Self.FK_PRODUCTO_PRICE_LIST">
+            <End Role="LIST" EntitySet="LIST" />
+            <End Role="PRODUCTO_PRICE" EntitySet="PRODUCTO_PRICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT" Association="Self.FK_PRI_PRODUCTO_PRICE_PRO_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="PRODUCTO_PRICE" EntitySet="PRODUCTO_PRICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_TAX_PRODUCT" Association="Self.FK_PRODUCT_TAX_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="PRODUCT_TAX" EntitySet="PRODUCT_TAX" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_TAX_PRODUCT_TAX" Association="Self.FK_PRODUCT_TAX_PRODUCT_TAX">
+            <End Role="TAX" EntitySet="TAX" />
+            <End Role="PRODUCT_TAX" EntitySet="PRODUCT_TAX" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TEST_DEVModelStoreContainer" CdmEntityContainer="TEST_DEVEntities">
+          <EntitySetMapping Name="LIST">
+            <EntityTypeMapping TypeName="TEST_DEVModel.LIST">
+              <MappingFragment StoreEntitySet="LIST">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT">
+            <EntityTypeMapping TypeName="TEST_DEVModel.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCT">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_TAX">
+            <EntityTypeMapping TypeName="TEST_DEVModel.PRODUCT_TAX">
+              <MappingFragment StoreEntitySet="PRODUCT_TAX">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="TAX_ID" ColumnName="TAX_ID" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTO_PRICE">
+            <EntityTypeMapping TypeName="TEST_DEVModel.PRODUCTO_PRICE">
+              <MappingFragment StoreEntitySet="PRODUCTO_PRICE">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="LIST_ID" ColumnName="LIST_ID" />
+                <ScalarProperty Name="DATE_INIT" ColumnName="DATE_INIT" />
+                <ScalarProperty Name="DATE_END" ColumnName="DATE_END" />
+                <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TAX">
+            <EntityTypeMapping TypeName="TEST_DEVModel.TAX">
+              <MappingFragment StoreEntitySet="TAX">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vProductoDetalleImpuestos">
+            <EntityTypeMapping TypeName="TEST_DEVModel.vProductoDetalleImpuestos">
+              <MappingFragment StoreEntitySet="vProductoDetalleImpuestos">
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="PRODUCT_NAME" ColumnName="PRODUCT_NAME" />
+                <ScalarProperty Name="PRICE_LIST_NAME" ColumnName="PRICE_LIST_NAME" />
+                <ScalarProperty Name="PRODUCT_PRICE" ColumnName="PRODUCT_PRICE" />
+                <ScalarProperty Name="PRODUCT_TAX" ColumnName="PRODUCT_TAX" />
+                <ScalarProperty Name="PERCENTAGE" ColumnName="PERCENTAGE" />
+                <ScalarProperty Name="MONEY" ColumnName="MONEY" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

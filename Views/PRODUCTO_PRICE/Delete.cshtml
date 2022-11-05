@@ -1,0 +1,72 @@
+﻿@model wpJulioSolorzano.Models.PRODUCTO_PRICE
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PRODUCTO_PRICE</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DATE_INIT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DATE_INIT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DATE_END)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DATE_END)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VALUE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VALUE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.STATE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STATE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LIST.NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LIST.NAME)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PRODUCT.NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PRODUCT.NAME)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,66 @@
+﻿@model wpJulioSolorzano.Models.PRODUCTO_PRICE
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PRODUCTO_PRICE</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DATE_INIT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DATE_INIT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DATE_END)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DATE_END)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VALUE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VALUE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.STATE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STATE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LIST.NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LIST.NAME)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PRODUCT.NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PRODUCT.NAME)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
